@@ -9,7 +9,7 @@ It is malicious program written in python with the following abilities:
 ## How to Use
 
 Go to main.py and enter your gmail and app password according to their respective variables.
-Follow this [link](https://support.google.com/mail/answer/185833?hl=en) in case you dont know how to set app passwords:
+Follow this [link](https://support.google.com/mail/answer/185833?hl=en) in case you need help to set app password.
 
 Also set the timer variable (by default 60 seconds).
 
