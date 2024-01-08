@@ -1,20 +1,39 @@
 # Keylogger
 
-It is malicious program written in python with the following abilities:
-1. Logging the keystrokes of the victim's machine and sending them to source via encrypted mail (Base64 encryption).
-2. Added functionality of screenshots after every set interval and also when the user presses ENTER or DEL key.
-3. Retrieves critical system information such as Public IP, saved Wifi passwords, browser history, running processes etc.
+This program is a malicious Python application with the following capabilities:
 
+1. **Keystroke Logging:** Records the keystrokes on the victim's machine and sends them to a specified source via encrypted email (Base64 encryption).
+2. **Screenshot Capture:** Takes screenshots at regular intervals and when certain keys (ENTER or DELETE) are pressed.
+3. **System Information Retrieval:** Gathers critical system information, including public IP, saved WiFi passwords, browser history, and running processes.
 
 ## How to Use
 
-Go to main.py and enter your gmail and app password according to their respective variables.
-Follow this [link](https://support.google.com/mail/answer/185833?hl=en) in case you need help to set app password.
+1. Open `main.py` and enter your Gmail credentials and app password in the respective variables. If needed, follow this [link](https://support.google.com/mail/answer/185833?hl=en) for assistance with setting up an app password.
 
-Also set the timer variable (by default 60 seconds).
+2. Set the `timer` variable (in seconds) to determine the interval between data reports.
 
-You can also pass an additional parameter to start method for printing the execution of functions realtime during the debugging phase. (By default it is set to false)
+3. Optionally, you can enable real-time debugging by passing an additional parameter to the `start` method:
 
-`keylogger.start(print_debug_logs=True)`
+    ```python
+    keylogger.start(print_debug_logs=True)
+    ```
 
-Convert main.py to an executable and you are good to go.
+## Converting `main.py` to `main.exe`
+
+To convert the Python script to an executable (.exe) file, you can use `pyinstaller`. Follow these steps:
+
+1. Install `pyinstaller` using the command:
+
+    ```bash
+    pip install pyinstaller
+    ```
+
+2. Navigate to the project folder and run the following command:
+
+    ```bash
+    pyinstaller --onefile --noconsole main.py
+    ```
+
+3. The final `main.exe` file will be generated in the `dist` folder upon completion.
+
+**Note:** The use of keyloggers and similar tools without explicit consent is unethical and may be illegal. Always ensure you have proper authorization before using such software.
