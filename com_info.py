@@ -117,7 +117,6 @@ def get_installed_software():
 def get_running_processes():
     log = "\n\nRunning Processes: \n"
     try:
-        # Add code to fetch running processes information
         for proc in psutil.process_iter(['pid', 'name', 'username']):
             log += f"Process: {proc.info['name']}, PID: {proc.info['pid']}, User: {proc.info['username']}\n"
     except Exception as e:

